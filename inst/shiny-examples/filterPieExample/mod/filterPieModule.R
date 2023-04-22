@@ -30,10 +30,6 @@ filterPieServer <- function(id, data, filterVar) {
         }
       })
 
-      # observeEvent(input$filterPie,{
-      #   print(input$filterPie)
-      # })
-
       return(filteredData)
     }
   )
