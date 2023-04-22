@@ -3,7 +3,7 @@
 #' @param example shiny app name
 #'
 #' @export
-runExample <- function(example = c("filterPieExample")) {
+runExample <- function(example = c("filterPieExample", "accordionFilterExample")) {
   appDir <- system.file("shiny-examples", example[1], package = "filterWidgets")
   if (appDir == "") {
     stop("Could not find example directory. Try re-installing `filterWidgets`.", call. = FALSE)
