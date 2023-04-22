@@ -1,5 +1,6 @@
 # filterWidgets
- some custom R shiny filter widgets
+ 
+Some custom R shiny filter widgets.
 
 ## Installation
 
@@ -13,7 +14,7 @@ devtools::install_github("amanigaultw/filterWidgets")
 
 ## Example App
 
-Illustrating how filterWidgets could be used within a Shiny app.
+Illustrating how filterWidgets could be used within Shiny apps.
 
 ``` r
 #pie chart filter
@@ -63,6 +64,8 @@ shinyApp(
   }
 )
 ```
+
+Here is how to include the pie filter widget into your own R Shiny apps.
 
 ```r
 #load libraries
