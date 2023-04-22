@@ -19,4 +19,7 @@ Illustrating how filterWidgets could be used within a Shiny app.
 #pie chart filter
 filterWidgets::runExample()
 
+#accordion filter
+filterWidgets::runExample("accordionFilterExample")
+
 ```
