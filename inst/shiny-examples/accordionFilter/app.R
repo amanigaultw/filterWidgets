@@ -22,7 +22,7 @@ shinyApp(
 
   server = function(input, output, session) {
 
-    filtered_data <- accordionFilterModuleServer("test", data, names(data))
+    filtered_data <- accordionFilterModuleServer("test", reactive(data), names(data))
     output$table <- renderDT({datatable(filtered_data())})
 
   }

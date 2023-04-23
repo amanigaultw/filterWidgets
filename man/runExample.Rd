@@ -4,7 +4,7 @@
 \alias{runExample}
 \title{Run example app}
 \usage{
-runExample(example = c("filterPieExample"))
+runExample(example = c("filterPie", "accordionFilter", "wideAccordionFilter"))
 }
 \arguments{
 \item{example}{shiny app name}

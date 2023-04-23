@@ -21,7 +21,10 @@ Illustrating how filterWidgets could be used within Shiny apps.
 filterWidgets::runExample()
 
 #accordion filter
-filterWidgets::runExample("accordionFilterExample")
+filterWidgets::runExample("accordionFilter")
+
+#wide accordion filter
+filterWidgets::runExample("wideAccordionFilter")
 
 ```
 

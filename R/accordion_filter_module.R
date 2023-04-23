@@ -55,8 +55,15 @@ accordionFilterModuleServer <- function(id, data, filterVars) {
 
       ns <- session$ns
 
-      rv <- shiny::reactiveValues(filter_list = get_filter_list(data, filterVars),
-                                  temp_filter_list = get_filter_list(data, filterVars))
+      rv <- shiny::reactiveValues(filter_list = NULL,
+                                  temp_filter_list = NULL)
+
+      shiny::observeEvent(data(),{
+        if(is.null(rv$temp_filter_list)){
+          rv$filter_list <- get_filter_list(data(), filterVars)
+          rv$temp_filter_list <- get_filter_list(data(), filterVars)
+        }
+      })
 
       output$identical <- shiny::reactive({
         identical <- identical(rv$temp_filter_list, rv$filter_list)
@@ -65,7 +72,7 @@ accordionFilterModuleServer <- function(id, data, filterVars) {
       shiny::outputOptions(output, 'identical', suspendWhenHidden = FALSE)
 
       output$unfiltered <- shiny::reactive({
-        unfiltered <- identical(rv$filter_list, get_filter_list(data, filterVars))
+        unfiltered <- identical(rv$filter_list, get_filter_list(shiny::isolate(data()), filterVars))
         return(unfiltered)
       })
       shiny::outputOptions(output, 'unfiltered', suspendWhenHidden = FALSE)
@@ -90,10 +97,10 @@ accordionFilterModuleServer <- function(id, data, filterVars) {
       })
 
       shiny::observeEvent(input$reset,{
-        rv$filter_list <- rv$temp_filter_list <- get_filter_list(data, filterVars)
+        rv$filter_list <- rv$temp_filter_list <- get_filter_list(shiny::isolate(data()), filterVars)
       })
 
-      return(shiny::reactive({apply_filter_list(data, rv$filter_list)}))
+      return(shiny::reactive({apply_filter_list(data(), rv$filter_list)}))
     }
   )
 }
@@ -103,29 +110,30 @@ accordionFilterModuleServer <- function(id, data, filterVars) {
 
 custom_accordion <- function(accordion_list, fluid = TRUE,
                              styled = TRUE, custom_style = "") {
+  id = uuid::UUIDgenerate(use.time = FALSE)
   fluid <- ifelse(fluid, "fluid", "")
   styled <- ifelse(styled, "styled", "")
   accordion_class = glue::glue("ui {styled} {fluid} accordion")
   shiny::tagList(
-    shiny::div(id = "test", class = accordion_class, style = custom_style,
-        accordion_list |> purrr::map(function(x) {
-          if (is.null(x$title) || is.null(x$content))
-            stop("There must be both title and content fields in `accordion_list`")
-          active <- "active"
-          shiny::tagList(
-            shiny::div(class = paste("title", active), shiny.semantic::icon("dropdown"), x$title),
-            shiny::div(class = paste("content", active),
-                shiny::p(class = "transition hidden",
-                  shiny::div(x$content)
-                )
-            )
-          )
-        })
+    shiny::div(id = id, class = accordion_class, style = custom_style,
+               accordion_list |> purrr::map(function(x) {
+                 if (is.null(x$title) || is.null(x$content))
+                   stop("There must be both title and content fields in `accordion_list`")
+                 active <- "active"
+                 shiny::tagList(
+                   shiny::div(class = paste("title", active), shiny.semantic::icon("dropdown"), x$title),
+                   shiny::div(class = paste("content", active),
+                              shiny::p(class = "transition hidden",
+                                       shiny::div(x$content)
+                              )
+                   )
+                 )
+               })
     ),
     shiny::tags$script(shiny::HTML("$('.ui.accordion').accordion();")),
-    shiny::tags$script(shiny::HTML("
-    var divs = document.getElementById('test').getElementsByClassName('active');
-    for (var i = 0; i < divs.length; i += 1) {divs[i].click();}"))
+    shiny::tags$script(shiny::HTML(paste0("
+    var divs = document.getElementById('", id, "').getElementsByClassName('active');
+    for (var i = 0; i < divs.length; i += 1) {divs[i].click();}")))
   )
 }
 
