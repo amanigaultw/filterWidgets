@@ -24,7 +24,7 @@ accordionFilterModuleUI <- function(id, style = NULL) {
           rows_height = c("auto")
         )
       ),
-      area_styles = list("apply" = 'padding-top:1rem;',
+      area_styles = list("apply" = 'padding-top:1rem;height:50px',
                          "reset" = 'padding-top:1rem;display:flex;justify-content:flex-end;',
                          "filter" = 'padding-top:1rem'),
       apply = shiny::conditionalPanel(condition = paste0("output['", id,"-identical'] == false"),
