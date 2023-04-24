@@ -10,6 +10,7 @@ library(shiny)
 library(shiny.semantic)
 library(DT)
 library(shinyWidgets)
+library(filterWidgets)
 
 shinyApp(
   ui = semanticPage(
