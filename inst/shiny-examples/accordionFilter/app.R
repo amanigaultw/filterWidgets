@@ -9,6 +9,7 @@ data <- data.frame(nationality = sample(c("French", "German", "British"), 1000, 
 library(shiny)
 library(shiny.semantic)
 library(DT)
+library(filterWidgets)
 
 shinyApp(
   ui = semanticPage(
