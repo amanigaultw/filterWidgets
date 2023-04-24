@@ -1,7 +1,7 @@
 library(shiny)
+library(filterWidgets)
 library(htmlwidgets)
 library(DT)
-library(filterWidgets)
 
 #load modules
 files = list.files(path = "mod/", pattern = "*.R")
