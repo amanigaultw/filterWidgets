@@ -88,8 +88,8 @@ accordionFilterModuleServer <- function(id, data, filterVars) {
       })
 
       shiny::observe({
-        rv$input_list <- lapply(seq_along(rv$filter_list), function(i) input[[paste0(names(rv$filter_list)[i], "_rows_selected")]])
-        rv$temp_filter_list <- apply_input_vectors(rv$filter_list, rv$input_list)
+        rv$input_list <- lapply(seq_along(shiny::isolate(rv$filter_list)), function(i) input[[paste0(names(shiny::isolate(rv$filter_list))[i], "_rows_selected")]])
+        rv$temp_filter_list <- apply_input_vectors(shiny::isolate(rv$filter_list), rv$input_list)
       })
 
       shiny::observeEvent(input$apply,{
