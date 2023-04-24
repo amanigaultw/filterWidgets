@@ -57,6 +57,9 @@ accordionFilterModuleServer <- function(id, data, filterVars) {
                                   temp_filter_list = NULL)
 
       shiny::observeEvent(data(),{
+        if(is.null(data())){
+          return(NULL)
+        }
         if(is.null(rv$temp_filter_list)){
           rv$filter_list <- get_filter_list(data(), filterVars)
           rv$temp_filter_list <- get_filter_list(data(), filterVars)
