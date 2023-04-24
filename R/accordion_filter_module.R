@@ -63,18 +63,6 @@ accordionFilterModuleServer <- function(id, data, filterVars) {
         }
       })
 
-      output$identical <- shiny::reactive({
-        identical <- identical(rv$temp_filter_list, rv$filter_list)
-        return(identical)
-      })
-      shiny::outputOptions(output, 'identical', suspendWhenHidden = FALSE)
-
-      output$unfiltered <- shiny::reactive({
-        unfiltered <- identical(rv$filter_list, get_filter_list(shiny::isolate(data()), filterVars))
-        return(unfiltered)
-      })
-      shiny::outputOptions(output, 'unfiltered', suspendWhenHidden = FALSE)
-
       output$accordion <- shiny::renderUI({
         rv$filter_list |>
           get_accordion_content(ns) |>
@@ -86,13 +74,19 @@ accordionFilterModuleServer <- function(id, data, filterVars) {
       })
 
       output$apply_button <- shiny::renderUI({
-        shiny::conditionalPanel(condition = paste0("output['", id,"-identical'] == false"),
-                                shiny.semantic::action_button(ns("apply"), "Apply", icon = shiny.semantic::icon("filter")))
+        if(identical(rv$temp_filter_list, rv$filter_list)){
+          ""
+        }else{
+          shiny.semantic::action_button(ns("apply"), "Apply", icon = shiny.semantic::icon("filter"))
+        }
       })
 
       output$reset_button <- shiny::renderUI({
-        shiny::conditionalPanel(condition = paste0("output['", id,"-unfiltered'] == false"),
-                                shiny.semantic::action_button(ns("reset"), "Reset", icon = shiny.semantic::icon("filter")))
+        if(identical(rv$filter_list, get_filter_list(shiny::isolate(data()), filterVars))){
+          ""
+        }else{
+          shiny.semantic::action_button(ns("reset"), "Reset", icon = shiny.semantic::icon("filter"))
+        }
       })
 
       shiny::observe({
