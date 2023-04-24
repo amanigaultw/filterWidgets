@@ -27,10 +27,8 @@ accordionFilterModuleUI <- function(id, style = NULL) {
       area_styles = list("apply" = 'padding-top:1rem;height:50px',
                          "reset" = 'padding-top:1rem;display:flex;justify-content:flex-end;',
                          "filter" = 'padding-top:1rem'),
-      apply = shiny::conditionalPanel(condition = paste0("output['", id,"-identical'] == false"),
-                                      shiny.semantic::action_button(ns("apply"), "Apply", icon = shiny.semantic::icon("filter"))),
-      reset = shiny::conditionalPanel(condition = paste0("output['", id,"-unfiltered'] == false"),
-                                      shiny.semantic::action_button(ns("reset"), "Reset", icon = shiny.semantic::icon("filter"))),
+      apply = shiny::uiOutput(ns("apply_button")),
+      reset = shiny::uiOutput(ns("reset_button")),
       filter = shiny::uiOutput(ns("accordion"))
     ),
     style = style),
@@ -85,6 +83,16 @@ accordionFilterModuleServer <- function(id, data, filterVars) {
 
       output$style <- shiny::renderUI({
         get_tables_style_tag(ns(names(rv$filter_list)))
+      })
+
+      output$apply_button <- shiny::renderUI({
+        shiny::conditionalPanel(condition = paste0("output['", id,"-identical'] == false"),
+                                shiny.semantic::action_button(ns("apply"), "Apply", icon = shiny.semantic::icon("filter")))
+      })
+
+      output$reset_button <- shiny::renderUI({
+        shiny::conditionalPanel(condition = paste0("output['", id,"-unfiltered'] == false"),
+                                shiny.semantic::action_button(ns("reset"), "Reset", icon = shiny.semantic::icon("filter")))
       })
 
       shiny::observe({
