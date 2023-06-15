@@ -37,8 +37,9 @@ accordion_checkbox_filter_module_ui <- function(id, style = NULL) {
 #' accordion filter UI module element
 #'
 #' @param id module id string
-#' @param data dataframe to be filtered
-#' @param filterVars columns names of
+#' @param unfiltered_data dataframe not yet filtered
+#' @param filter_var a single column name from unfiltered_data, to be used as a filter variable
+#' @param filtered_data dataframe as filtered by other filterers or widgets (useful for chaining filters together)
 #'
 #' @return a filtered version of the dataset as a reactive
 #' @export
